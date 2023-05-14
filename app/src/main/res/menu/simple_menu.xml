@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_add"
+        android:icon="@drawable/ic_action_add"
+        android:title="Добавить новый счётчик"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_ligth"
+        android:icon="@drawable/ic_action_highlight"
+        android:title="Вкл/Выкл фонарик"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_update"
+        android:title="Обновить"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_exit"
+        android:title="Выход"
+        app:showAsAction="never"/>
+</menu>
