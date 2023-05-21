@@ -23,11 +23,13 @@ public class ReadingAdapter extends RecyclerView.Adapter<ReadingAdapter.ViewHold
 
         private final TextView dataView;
         private final TextView readingView;
+        private final TextView tarifView;
 
         ViewHolder(View view){
             super(view);
-            dataView = view.findViewById(R.id.tvFragData);
-            readingView = view.findViewById(R.id.tvFragReading);
+            dataView = view.findViewById(R.id.tvReadingData);
+            readingView = view.findViewById(R.id.tvReadingReading);
+            tarifView = view.findViewById(R.id.tvReadingTarif);
         }
     }
 
@@ -41,8 +43,9 @@ public class ReadingAdapter extends RecyclerView.Adapter<ReadingAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ReadingAdapter.ViewHolder holder, int position) {
         Reading reading = readings.get(position);
-        holder.dataView.setText(String.format("%s", reading.getData()));
-        holder.readingView.setText(String.format("%f", reading.getReading()));
+        holder.dataView.setText(reading.getData());
+        holder.readingView.setText(String.valueOf(reading.getReading()));
+        holder.tarifView.setText(String.valueOf(reading.getTarif()));
     }
 
     @Override

@@ -5,10 +5,12 @@ import java.util.HashMap;
 public class Meter {
     private double reading;
     private String type;
+    private int meterNum;
 
-    public Meter(double reading, String type) {
+    public Meter(double reading, String type, int meterNum) {
         this.reading = reading;
         this.type = type;
+        this.meterNum = meterNum;
     }
 
     public double getReading() {
@@ -25,5 +27,13 @@ public class Meter {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getMeterNum() {
+        return meterNum;
+    }
+
+    public void setMeterNum(int meterNum) {
+        this.meterNum = meterNum;
     }
 }

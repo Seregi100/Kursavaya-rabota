@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(httpRunnable.getRespBody());
                     text = "Title: " + jsonObject.getString("title") + "\n" + "Task: " + jsonObject.getString("task") + "\n" + "Data: " + jsonObject.getJSONArray("data") + "\n" + "Variant: " + jsonObject.getInt("variant") + "\n" + "Result code: " + jsonObject.getInt("result_code");
                     flag = true;
-                    //tvText.setText(text);
                 }catch(org.json.JSONException e) {
                     Toast toast = Toast.makeText(this, "Неправильные логин, пароль или группа", Toast.LENGTH_LONG);
                     toast.show();
