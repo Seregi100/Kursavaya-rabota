@@ -13,20 +13,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 
 public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMeterClickListener, NewMeterFragment.OnCallback {
 
+    private DBManagerMeter dbManagerMeter;
     private String choosenType;
     private ArrayList<Meter> meters = new ArrayList<>();
     private int meterCounter=0;
     private MeterAdapter adapter;
+    private boolean flashFlag = false;
     @Override
     public void type(String choosenType) {
         this.choosenType = choosenType;
@@ -36,6 +42,8 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app);
+        MeterSQLiteHelper sqhelper = new MeterSQLiteHelper(this, "meter_database.db", null, 1);
+        this.dbManagerMeter = new DBManagerMeter(sqhelper);
         Toolbar tb = findViewById(R.id.tb);
         setSupportActionBar(tb);
         ActionBar ab = getSupportActionBar();
@@ -45,11 +53,14 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
             ab.setDisplayHomeAsUpEnabled(true);
         }
         meterCounter+=1;
-        meters.add(new Meter((double)20020, "ГВС", meterCounter));
+        dbManagerMeter.saveMeterToDatabase(new Meter("ГВС", meterCounter));
         meterCounter+=1;
-        meters.add(new Meter((double)476, "Электричество", meterCounter));
+        meters.add(new Meter("Электричество", meterCounter));
+        dbManagerMeter.saveMeterToDatabase(new Meter("Электричество", meterCounter));
+        meters = dbManagerMeter.loadAllMetersFromDatabase();
         RecyclerView rcView = findViewById(R.id.recyclerViewMeters);
         adapter = new MeterAdapter(meters, this);
+        adapter.setDbManagerMeter(dbManagerMeter);
         rcView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rcView.setAdapter(adapter);
     }
@@ -70,10 +81,33 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
             newMeterDialog.show(transaction, "type_meter");
             meterCounter+=1;
             type(choosenType);
-            meters.add(new Meter((double)3003, choosenType, meterCounter));
+            Meter meter = new Meter(choosenType, meterCounter);
+            dbManagerMeter.saveMeterToDatabase(meter);
+            meters.add(meter);
             adapter.notifyDataSetChanged();
+            Log.i("uiop", "Add new meter");
             return true;
-        } else if (itemId == R.id.action_update) {
+        } else if (itemId == R.id.action_ligth) {
+            boolean isCameraFlash = getApplicationContext().getPackageManager()
+                    .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+            if (!isCameraFlash){
+                Toast toast = Toast.makeText(this, "На устройстве отсутствует фонарик", Toast.LENGTH_LONG);
+                toast.show();
+                Log.i("uiop", "No fleshlight on device");
+            }else {
+                Camera cam = Camera.open();
+                Camera.Parameters p = cam.getParameters();
+                if (!flashFlag) {
+                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    cam.setParameters(p);
+                    cam.startPreview();
+                    Log.i("uiop", "Fleshlight ON");
+                } else {
+                    cam.stopPreview();
+                    cam.release();
+                    Log.i("uiop", "Fleshlight OFF");
+                }
+            }
             return true;
         } else if (itemId == R.id.action_exit) {
             finish();
@@ -90,9 +124,9 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
         Intent intent = new Intent(this, ExampleMeter.class);
         Bundle b = new Bundle();
         b.putString("type", meter.getType());
-        b.putDouble("reading", meter.getReading());
         b.putInt("number", meter.getMeterNum());
         intent.putExtra("bundle", b);
+        Log.i("uiop", "Meter activity begin");
         startActivity(intent);
     }
 }

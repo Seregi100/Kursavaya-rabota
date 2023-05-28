@@ -12,10 +12,6 @@
         android:title="Вкл/Выкл фонарик"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_update"
-        android:title="Обновить"
-        app:showAsAction="never"/>
-    <item
         android:id="@+id/action_exit"
         android:title="Выход"
         app:showAsAction="never"/>

@@ -1,8 +1,11 @@
 package com.mirea.kt.android2023;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,11 @@ import java.util.Collections;
 public class MeterAdapter extends RecyclerView.Adapter<MeterAdapter.ViewHolder>{
     private ArrayList<Meter> meters;
     private OnMeterClickListener onMeterClickListener;
+    private DBManagerMeter dbManagerMeter;
+
+    public void setDbManagerMeter(DBManagerMeter dbManagerMeter) {
+        this.dbManagerMeter = dbManagerMeter;
+    }
 
     public MeterAdapter(ArrayList<Meter> meters) {
         this.meters = meters;
@@ -31,12 +39,12 @@ public class MeterAdapter extends RecyclerView.Adapter<MeterAdapter.ViewHolder>{
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         private final TextView typeView;
-        private final TextView lastReadingView;
+        private final ImageButton btDeleteMeter;
 
         ViewHolder(View view){
             super(view);
             typeView = view.findViewById(R.id.tvMeterType);
-            lastReadingView = view.findViewById(R.id.tvLastReading);
+            btDeleteMeter = view.findViewById(R.id.btDeleteMeter);
         }
     }
 
@@ -51,7 +59,14 @@ public class MeterAdapter extends RecyclerView.Adapter<MeterAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull MeterAdapter.ViewHolder holder, int position) {
         Meter meter = meters.get(position);
         holder.typeView.setText(String.format("%s", meter.getType()));
-        holder.lastReadingView.setText(String.format("%f", meter.getReading()));
+        holder.btDeleteMeter.setOnClickListener(v -> {
+            int actualPosition = holder.getAdapterPosition();
+            dbManagerMeter.deleteMeterFromDatabase(meter.getMeterNum());
+            Log.i("uiop", "Delete meter with number " + meter.getMeterNum());
+            meters.remove(actualPosition);
+            notifyItemRemoved(actualPosition);
+            notifyItemRangeChanged(actualPosition, meters.size());
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

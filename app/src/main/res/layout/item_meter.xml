@@ -12,30 +12,26 @@
         app:cardUseCompatPadding="true"
         card_view:cardCornerRadius="3dp"
         card_view:cardElevation="3dp">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
             <ImageView
+                android:id="@+id/ivImageMeterType"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/electro"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp">
-                <TextView
-                    android:id="@+id/tvMeterType"
-                    android:textSize="24sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/tvLastReading"
-                    android:layout_below="@id/tvMeterType"
-                    android:textSize="24sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </RelativeLayout>
-        </LinearLayout>
+                android:src="@drawable/electro" />
+            <TextView
+                android:id="@+id/tvMeterType"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/ivImageMeterType"/>
+            <ImageButton
+                android:id="@+id/btDeleteMeter"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_action_delete"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -15,7 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ExampleMeter extends AppCompatActivity {
 
@@ -27,7 +30,6 @@ public class ExampleMeter extends AppCompatActivity {
         setContentView(R.layout.activity_example_meter);
         Bundle b = getIntent().getBundleExtra("bundle");
         String type = b.getString("type");
-        double reading = b.getDouble("reading");
         int meterNum = b.getInt("number");
         ReadingSQLiteHelper RLSQLH = new ReadingSQLiteHelper(this, "reading_database" + meterNum +".db", null, 1);
         RLSQLH.setMeter(meterNum);
@@ -41,7 +43,6 @@ public class ExampleMeter extends AppCompatActivity {
         EditText etNewTarif = findViewById(R.id.etNewTarif);
         Reading testRead = new Reading("21.05.2023", 400.0, 200.0);
         testRead.setMeterNum(meterNum);
-        //boolean test = dbManagerReading.saveReadingToDatabase(testRead);
         ArrayList<Reading> readings = dbManagerReading.loadAllReadingsFromDatabase();
         readings.add(testRead);
         ReadingAdapter adapter = new ReadingAdapter(readings);
@@ -63,13 +64,15 @@ public class ExampleMeter extends AppCompatActivity {
         btNewReading.setOnClickListener(v -> {
             double newReading = Double.parseDouble(etNewReading.getText().toString());
             double newTarif = Double.parseDouble(etNewTarif.getText().toString());
-            Reading newRead = new Reading("21.05.2023", newReading, newTarif);
+            Date currentTime = Calendar.getInstance().getTime();
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+            Reading newRead = new Reading(format.format(currentTime), newReading, newTarif);
             newRead.setMeterNum(meterNum);
             boolean res = dbManagerReading.saveReadingToDatabase(newRead);
             readings.add(newRead);
-            if (res){
+            if (res) {
                 Log.i("uiop", "Добавлено новое показание");
-            }else{
+            } else {
                 Log.d("uiop", "Ошибка при добавлении показания");
             }
             adapter.notifyDataSetChanged();

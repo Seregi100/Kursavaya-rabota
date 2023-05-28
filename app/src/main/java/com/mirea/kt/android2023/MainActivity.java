@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if (flag==true){
                 Intent intent = new Intent(this, AppActivity.class);
+                Log.i("uiop", "App activity begin");
                 startActivity(intent);
             }
         });

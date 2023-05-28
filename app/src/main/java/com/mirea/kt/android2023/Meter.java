@@ -3,22 +3,12 @@ package com.mirea.kt.android2023;
 import java.util.HashMap;
 
 public class Meter {
-    private double reading;
     private String type;
     private int meterNum;
 
-    public Meter(double reading, String type, int meterNum) {
-        this.reading = reading;
+    public Meter(String type, int meterNum) {
         this.type = type;
         this.meterNum = meterNum;
-    }
-
-    public double getReading() {
-        return reading;
-    }
-
-    public void setReading(double reading) {
-        this.reading = reading;
     }
 
     public String getType() {
