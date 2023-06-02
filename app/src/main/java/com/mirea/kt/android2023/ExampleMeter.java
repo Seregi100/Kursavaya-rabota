@@ -41,23 +41,20 @@ public class ExampleMeter extends AppCompatActivity {
         ImageView ivType = findViewById(R.id.ivImage);
         EditText etNewReading = findViewById(R.id.etNewReading);
         EditText etNewTarif = findViewById(R.id.etNewTarif);
-        Reading testRead = new Reading("21.05.2023", 400.0, 200.0);
-        testRead.setMeterNum(meterNum);
         ArrayList<Reading> readings = dbManagerReading.loadAllReadingsFromDatabase();
-        readings.add(testRead);
         ReadingAdapter adapter = new ReadingAdapter(readings);
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recView.setAdapter(adapter);
-        if (type=="Электричество"){
+        if (type.equals("Электричество")){
             tvType.setText("Электричество");
             ivType.setImageResource(R.drawable.electro);
-        } else if (type=="ГВС") {
+        } else if (type.equals("Горячая вода")) {
             tvType.setText("Горячая вода");
             ivType.setImageResource(R.drawable.hw);
-        } else if (type=="ХВС") {
+        } else if (type.equals("Холодная вода")) {
             tvType.setText("Холодная вода");
             ivType.setImageResource(R.drawable.cw);
-        } else if (type=="Газ") {
+        } else if (type.equals("Газ")) {
             tvType.setText("Газ");
             ivType.setImageResource(R.drawable.gas);
         }

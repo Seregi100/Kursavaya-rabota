@@ -23,19 +23,16 @@ import java.util.ArrayList;
 public class NewMeterFragment extends DialogFragment {
 
     private String[] meterTypes = {"Электричество", "Горячая вода", "Холодная вода", "Газ"};
+    private DBManagerMeter dbManagerMeter;
+    private MeterAdapter adapter;
+    private int meterCounter;
+    private ArrayList<Meter> meters;
     private String choosenType;
-    public NewMeterFragment() {}
-
-    public interface OnCallback{
-        public void type(String type);
-    }
-
-    OnCallback sendType;
-
-    @Override
-    public void onAttach(Context context){
-        super.onAttach(context);
-        sendType = (OnCallback) context;
+    public NewMeterFragment(DBManagerMeter dbManagerMeter, MeterAdapter adapter, int meterCounter, ArrayList<Meter> meters) {
+        this.dbManagerMeter = dbManagerMeter;
+        this.adapter = adapter;
+        this.meterCounter = meterCounter;
+        this.meters = meters;
     }
 
     @NonNull
@@ -53,7 +50,10 @@ public class NewMeterFragment extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        sendType.type(choosenType);
+                        Meter meter = new Meter(choosenType, meterCounter);
+                        dbManagerMeter.saveMeterToDatabase(meter);
+                        meters.add(meter);
+                        adapter.notifyDataSetChanged();
                     }
                 })
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {

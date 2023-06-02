@@ -25,7 +25,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMeterClickListener, NewMeterFragment.OnCallback {
+public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMeterClickListener {
 
     private DBManagerMeter dbManagerMeter;
     private String choosenType;
@@ -33,10 +33,6 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
     private int meterCounter=0;
     private MeterAdapter adapter;
     private boolean flashFlag = false;
-    @Override
-    public void type(String choosenType) {
-        this.choosenType = choosenType;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +48,6 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
             ab.setHomeButtonEnabled(true);
             ab.setDisplayHomeAsUpEnabled(true);
         }
-        meterCounter+=1;
-        dbManagerMeter.saveMeterToDatabase(new Meter("ГВС", meterCounter));
-        meterCounter+=1;
-        meters.add(new Meter("Электричество", meterCounter));
-        dbManagerMeter.saveMeterToDatabase(new Meter("Электричество", meterCounter));
         meters = dbManagerMeter.loadAllMetersFromDatabase();
         RecyclerView rcView = findViewById(R.id.recyclerViewMeters);
         adapter = new MeterAdapter(meters, this);
@@ -76,15 +67,10 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int itemId = item.getItemId();
         if (itemId == R.id.action_add) {
-            NewMeterFragment newMeterDialog = new NewMeterFragment();
+            meterCounter+=1;
+            NewMeterFragment newMeterDialog = new NewMeterFragment(dbManagerMeter, adapter, meterCounter, meters);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             newMeterDialog.show(transaction, "type_meter");
-            meterCounter+=1;
-            type(choosenType);
-            Meter meter = new Meter(choosenType, meterCounter);
-            dbManagerMeter.saveMeterToDatabase(meter);
-            meters.add(meter);
-            adapter.notifyDataSetChanged();
             Log.i("uiop", "Add new meter");
             return true;
         } else if (itemId == R.id.action_ligth) {

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,11 +41,13 @@ public class MeterAdapter extends RecyclerView.Adapter<MeterAdapter.ViewHolder>{
 
         private final TextView typeView;
         private final ImageButton btDeleteMeter;
+        private final ImageView imageType;
 
         ViewHolder(View view){
             super(view);
             typeView = view.findViewById(R.id.tvMeterType);
             btDeleteMeter = view.findViewById(R.id.btDeleteMeter);
+            imageType = view.findViewById(R.id.ivImageMeterType);
         }
     }
 
@@ -59,6 +62,15 @@ public class MeterAdapter extends RecyclerView.Adapter<MeterAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull MeterAdapter.ViewHolder holder, int position) {
         Meter meter = meters.get(position);
         holder.typeView.setText(String.format("%s", meter.getType()));
+        if (meter.getType()=="Электричество"){
+            holder.imageType.setImageResource(R.drawable.electro);
+        } else if (meter.getType()=="Горячая вода") {
+            holder.imageType.setImageResource(R.drawable.hw);
+        } else if (meter.getType()=="Холодная вода") {
+            holder.imageType.setImageResource(R.drawable.cw);
+        } else if (meter.getType()=="Газ") {
+            holder.imageType.setImageResource(R.drawable.gas);
+        }
         holder.btDeleteMeter.setOnClickListener(v -> {
             int actualPosition = holder.getAdapterPosition();
             dbManagerMeter.deleteMeterFromDatabase(meter.getMeterNum());
