@@ -44,7 +44,7 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
         setSupportActionBar(tb);
         ActionBar ab = getSupportActionBar();
         if (ab!=null){
-            ab.setTitle("Счётчики");
+            ab.setTitle(getString(R.string.name));
             ab.setHomeButtonEnabled(true);
             ab.setDisplayHomeAsUpEnabled(true);
         }
@@ -71,15 +71,15 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
             NewMeterFragment newMeterDialog = new NewMeterFragment(dbManagerMeter, adapter, meterCounter, meters);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             newMeterDialog.show(transaction, "type_meter");
-            Log.i("uiop", "Add new meter");
+            Log.i(getString(R.string.app_tag), "Add new meter");
             return true;
         } else if (itemId == R.id.action_ligth) {
             boolean isCameraFlash = getApplicationContext().getPackageManager()
                     .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
             if (!isCameraFlash){
-                Toast toast = Toast.makeText(this, "На устройстве отсутствует фонарик", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(this, getString(R.string.no_flashlight_messge), Toast.LENGTH_LONG);
                 toast.show();
-                Log.i("uiop", "No fleshlight on device");
+                Log.i(getString(R.string.app_tag), "No fleshlight on device");
             }else {
                 Camera cam = Camera.open();
                 Camera.Parameters p = cam.getParameters();
@@ -87,11 +87,11 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
                     p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                     cam.setParameters(p);
                     cam.startPreview();
-                    Log.i("uiop", "Fleshlight ON");
+                    Log.i(getString(R.string.app_tag), "Fleshlight ON");
                 } else {
                     cam.stopPreview();
                     cam.release();
-                    Log.i("uiop", "Fleshlight OFF");
+                    Log.i(getString(R.string.app_tag), "Fleshlight OFF");
                 }
             }
             return true;
@@ -112,7 +112,7 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
         b.putString("type", meter.getType());
         b.putInt("number", meter.getMeterNum());
         intent.putExtra("bundle", b);
-        Log.i("uiop", "Meter activity begin");
+        Log.i(getString(R.string.app_tag), "Meter activity begin");
         startActivity(intent);
     }
 }

@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">Kursavaya rabota</string>
+    <string name="name">Счётчики</string>
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
     <string name="group">Группа</string>
     <string name="admin">Разработчик: Кузьмин Сергей РИБО-01-21</string>
     <string name="bt_login">Войти</string>
+    <string name="app_tag">uiop</string>
+    <string name="incorrect_data_messge">Неправильные логин, пароль или группа</string>
+    <string name="electro">Электричество</string>
+    <string name="hw">Горячая вода</string>
+    <string name="cw">Холодная вода</string>
+    <string name="gas">Газ</string>
+    <string name="no_flashlight_messge">На устройстве отсутствует фонарик</string>
 </resources>

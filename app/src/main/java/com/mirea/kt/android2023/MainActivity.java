@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             try{
                 th.join();
             }catch(InterruptedException ex){
-                Log.e("uiop", "InterruptedException");
+                Log.e(getString(R.string.app_tag), "InterruptedException");
             }finally{
                 try{
                     String text;
@@ -47,14 +47,14 @@ public class MainActivity extends AppCompatActivity {
                     text = "Title: " + jsonObject.getString("title") + "\n" + "Task: " + jsonObject.getString("task") + "\n" + "Data: " + jsonObject.getJSONArray("data") + "\n" + "Variant: " + jsonObject.getInt("variant") + "\n" + "Result code: " + jsonObject.getInt("result_code");
                     flag = true;
                 }catch(org.json.JSONException e) {
-                    Toast toast = Toast.makeText(this, "Неправильные логин, пароль или группа", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(this, getString(R.string.incorrect_data_messge), Toast.LENGTH_LONG);
                     toast.show();
-                    Log.e("uiop", "Incorrect data");
+                    Log.e(getString(R.string.app_tag), "Incorrect data");
                 }
             }
             if (flag==true){
                 Intent intent = new Intent(this, AppActivity.class);
-                Log.i("uiop", "App activity begin");
+                Log.i(getString(R.string.app_tag), "App activity begin");
                 startActivity(intent);
             }
         });

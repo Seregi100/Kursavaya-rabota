@@ -46,16 +46,16 @@ public class ExampleMeter extends AppCompatActivity {
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recView.setAdapter(adapter);
         if (type.equals("Электричество")){
-            tvType.setText("Электричество");
+            tvType.setText(getString(R.string.electro));
             ivType.setImageResource(R.drawable.electro);
         } else if (type.equals("Горячая вода")) {
-            tvType.setText("Горячая вода");
+            tvType.setText(getString(R.string.hw));
             ivType.setImageResource(R.drawable.hw);
         } else if (type.equals("Холодная вода")) {
-            tvType.setText("Холодная вода");
+            tvType.setText(getString(R.string.cw));
             ivType.setImageResource(R.drawable.cw);
         } else if (type.equals("Газ")) {
-            tvType.setText("Газ");
+            tvType.setText(getString(R.string.gas));
             ivType.setImageResource(R.drawable.gas);
         }
         btNewReading.setOnClickListener(v -> {
@@ -68,9 +68,9 @@ public class ExampleMeter extends AppCompatActivity {
             boolean res = dbManagerReading.saveReadingToDatabase(newRead);
             readings.add(newRead);
             if (res) {
-                Log.i("uiop", "Добавлено новое показание");
+                Log.i(getString(R.string.app_tag), "Добавлено новое показание");
             } else {
-                Log.d("uiop", "Ошибка при добавлении показания");
+                Log.d(getString(R.string.app_tag), "Ошибка при добавлении показания");
             }
             adapter.notifyDataSetChanged();
         });
