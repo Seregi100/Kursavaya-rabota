@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         EditText edLogin = findViewById(R.id.edLogin);
         EditText edPassword = findViewById(R.id.edPassword);
         EditText edGroup = findViewById(R.id.edGroup);
-        TextView tvText = findViewById(R.id.tvText);
         loginBt.setOnClickListener(v -> {
             String login = edLogin.getText().toString();
             String password = edPassword.getText().toString();

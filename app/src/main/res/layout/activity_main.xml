@@ -70,11 +70,6 @@
         </LinearLayout>
     </RelativeLayout>
     <TextView
-        android:id="@+id/tvText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rl"/>
-    <TextView
         android:id="@+id/tvBottomText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -4,17 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -74,24 +74,47 @@ public class AppActivity extends AppCompatActivity implements MeterAdapter.OnMet
             Log.i(getString(R.string.app_tag), "Add new meter");
             return true;
         } else if (itemId == R.id.action_ligth) {
-            boolean isCameraFlash = getApplicationContext().getPackageManager()
-                    .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+            boolean isCameraFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
             if (!isCameraFlash){
                 Toast toast = Toast.makeText(this, getString(R.string.no_flashlight_messge), Toast.LENGTH_LONG);
                 toast.show();
                 Log.i(getString(R.string.app_tag), "No fleshlight on device");
             }else {
-                Camera cam = Camera.open();
-                Camera.Parameters p = cam.getParameters();
-                if (!flashFlag) {
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                    cam.setParameters(p);
-                    cam.startPreview();
-                    Log.i(getString(R.string.app_tag), "Fleshlight ON");
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    Camera cam = Camera.open();
+                    Camera.Parameters p = cam.getParameters();
+                    if (!flashFlag) {
+                        p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                        cam.setParameters(p);
+                        cam.startPreview();
+                        Log.i(getString(R.string.app_tag), "Fleshlight ON");
+                    } else {
+                        cam.stopPreview();
+                        cam.release();
+                        Log.i(getString(R.string.app_tag), "Fleshlight OFF");
+                    }
                 } else {
-                    cam.stopPreview();
-                    cam.release();
-                    Log.i(getString(R.string.app_tag), "Fleshlight OFF");
+                    CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+                    String cameraId = null;
+                    if (!flashFlag) {
+                        try {
+                            cameraId = camManager.getCameraIdList()[0];
+                            camManager.setTorchMode(cameraId, true);
+                            flashFlag = true;
+                            Log.i(getString(R.string.app_tag), "Fleshlight ON");
+                        } catch (CameraAccessException e) {
+                            Log.e(getString(R.string.app_tag), "CameraAccessException error");
+                        }
+                    } else {
+                        try {
+                            cameraId = camManager.getCameraIdList()[0];
+                            camManager.setTorchMode(cameraId, false);
+                            flashFlag = false;
+                            Log.i(getString(R.string.app_tag), "Fleshlight OFF");
+                        } catch (CameraAccessException e) {
+                            Log.e(getString(R.string.app_tag), "CameraAccessException error");
+                        }
+                    }
                 }
             }
             return true;
