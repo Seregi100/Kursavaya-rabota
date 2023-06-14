@@ -32,7 +32,6 @@ public class HTTPRunnable implements Runnable {
                 osw.write(generateStringBody());
                 osw.flush();
                 int responseCode = httpConnection.getResponseCode();
-                System.out.println("Response code: " + responseCode);
                 if (responseCode == 200) {
                     InputStreamReader isr = new InputStreamReader(httpConnection.getInputStream());
                     BufferedReader br = new BufferedReader(isr);

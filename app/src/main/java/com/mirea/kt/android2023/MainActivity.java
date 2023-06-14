@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             data.put("lgn", login);
             data.put("pwd", password);
             data.put("g", group);
-            HTTPRunnable httpRunnable = new HTTPRunnable("https://android-for-students.ru/coursework/login.php", data);
+            HTTPRunnable httpRunnable = new HTTPRunnable(getString(R.string.http), data);
             boolean flag = false;
             Thread th = new Thread(httpRunnable);
             th.start();

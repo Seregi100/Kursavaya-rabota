@@ -13,4 +13,5 @@
     <string name="cw">Холодная вода</string>
     <string name="gas">Газ</string>
     <string name="no_flashlight_messge">На устройстве отсутствует фонарик</string>
+    <string name="http">https://android-for-students.ru/coursework/login.php</string>
 </resources>
